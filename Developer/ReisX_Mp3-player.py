@@ -33,7 +33,7 @@ def updateDiscord(durum, detaylar):
 
     state_dc = f"{durum}"
     details_dc = f"{detaylar}"
-    buttons = [{"label": "Download", "url": "https://bitmedidaha.com"}]
+    buttons = [{"label": "Github", "url": "https://github.com/reisgoldmanX/ReisX-Mp3_player"}]
 
     try:
         RPC.update(large_image=big_image, large_text=big_text, small_image=small_image, small_text=small_text, state=state_dc, details=details_dc, buttons=buttons)
