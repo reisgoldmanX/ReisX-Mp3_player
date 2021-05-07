@@ -293,9 +293,6 @@ discord_green = PhotoImage(file="images/discord_green_in.png")
 dc_label = Label(image=discord_red)
 dc_label.pack(side=TOP, anchor=NW)
 
-discord_btn = Button(master_frame, text="Refresh Discord", bd=5, command="")
-discord_btn.grid(row=1, column=1, padx=10)
-
 
 controls_frame = Frame(master_frame)
 controls_frame.grid(row=1, column=0, pady=20)
