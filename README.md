@@ -21,7 +21,9 @@ These are the playlist settings you can refresh and mix the playlist by clicking
 
 The `remove Songs` section next to the `Playlist settings` section :
 
-![Remove Songs](readme_images/Remove_songs.png)
+
+![Remove Songs](readme_images/Remove_songs.PNG)
+
 
 You can remove a song from the playlist or you can remove all the songs in the playlist by clicking them.
 This music player supports [discord](https://discord.com/) activites this works only with desktop discord app.
