@@ -5,6 +5,8 @@ This is a open source music player written in python.<br />
 The main purpose is to listen to music without reducing the device performance without being exposed to advertisements.
 
 ## Usage
+**This Music Player only works for Windows.**
+
 First you have to download mp3 files to the `Music` folder. 
 You can use [Youtube to mp3 converter](https://yt1s.com/youtube-to-mp3/en1). <br />
 After you are done with downloading run the `ReisX Mp3 Player` program. <br />
