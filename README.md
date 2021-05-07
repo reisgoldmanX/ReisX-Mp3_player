@@ -9,7 +9,7 @@ The main purpose is to listen to music without reducing the device performance w
 
 First you have to download mp3 files to the `Music` folder. 
 You can use [Youtube to mp3 converter](https://yt1s.com/youtube-to-mp3/en1). <br />
-After you are done with downloading run the `ReisX Mp3 Player` program. <br />
+After you are done with downloading run the `ReisX_Mp3-player.exe` program. <br />
 This screen will **pop up**:
 
 ![MainScreen](readme_images/MainScreen.png)
