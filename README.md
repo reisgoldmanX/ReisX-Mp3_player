@@ -1,13 +1,37 @@
 # ReisX: Mp3 Player
 ![Theicon](readme_images/TheProgramİco.png)
  
-This is a open source music player written in python. 
+This is a open source music player written in python.<br /> 
 The main purpose is to listen to music without reducing the device performance without being exposed to advertisements.
 
+## Usage
+First you have to download mp3 files to the `Music` folder. 
+You can use [Youtube to mp3 converter](https://yt1s.com/youtube-to-mp3/en1). <br />
+After you are done with downloading run the `ReisX Mp3 Player` program. <br />
+This screen will **pop up**:
+
+![MainScreen](readme_images/MainScreen.png)
+
+The black screen is the Playlist part you can choose the music you want to listen by clicking to the music name. You will figure it out. <br />
+ There is `Playlist settings` in the **top right corner:**
+
+![Playlist Settings](readme_images/Playlist_settings.png)
+
+These are the playlist settings you can refresh and mix the playlist by clicking on them.
+
+The `remove Songs` section next to the `Playlist settings` section :
+
+![Remove Songs](readme_images/Remove_songs.png)
+
+You can remove a song from the playlist or you can remove all the songs in the playlist by clicking them.
+This music player supports [discord](https://discord.com/) activites this works only with desktop discord app.
+
+![discord realtime](readme_images/Discord-activity.png)
+![Discord activity](readme_images/discord_online.png)
 
 
 # Contributing
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. 
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. <br /> 
 Any contributions you make are greatly appreciated.
 ### requirements
 
