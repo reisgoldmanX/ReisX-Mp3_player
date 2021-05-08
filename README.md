@@ -3,7 +3,10 @@
  
 This is a open source music player written in python.<br /> 
 The main purpose is to listen to music without reducing the device performance without being exposed to advertisements. <br />
-[Install](https://github.com/reisgoldmanX/ReisX-Mp3_player/archive/refs/heads/main.zip)
+
+## Install for Windows
+You can [Install](https://github.com/reisgoldmanX/ReisX-Mp3_player/raw/main/ReisX_Mp3-player%3D%3D0.0.2.zip) this zip package then extract it to a folder. <br />
+After that you just start `ReisX_Mp3-player.exe`.
 
 ## Usage
 **This Music Player only works for Windows.**
