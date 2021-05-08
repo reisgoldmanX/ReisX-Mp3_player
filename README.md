@@ -2,7 +2,8 @@
 ![Theicon](readme_images/TheProgramİco.png)
  
 This is a open source music player written in python.<br /> 
-The main purpose is to listen to music without reducing the device performance without being exposed to advertisements.
+The main purpose is to listen to music without reducing the device performance without being exposed to advertisements. <br />
+[Install](https://github.com/reisgoldmanX/ReisX-Mp3_player/archive/refs/heads/main.zip)
 
 ## Usage
 **This Music Player only works for Windows.**
