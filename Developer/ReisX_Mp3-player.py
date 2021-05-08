@@ -1,12 +1,13 @@
-from pypresence import Presence
 from tkinter import *
 import tkinter.ttk as ttk
 from pygame import mixer
 from mutagen.mp3 import MP3
 from random import choice
+from keyboard import is_pressed
+from requests import get
+from pypresence import Presence
 import time
 import os
-from requests import get
 
 
 root = Tk()
@@ -17,7 +18,7 @@ root.resizable(False, False)
 mixer.init()
 
 music_dir = os.getcwd() + "\Music\\"
-client_id = "838036099221684234"
+client_id = "CLİENT_İD"
 RPC = Presence(client_id)
 state = "Dev: reisgoldmanX"
 details = "Just started"
@@ -57,7 +58,6 @@ def discord_activity_loop():
 
 
 def connect():
-    connection = None
     try:
         r = get("https://google.com")
         r.raise_for_status()
@@ -72,6 +72,17 @@ def connect():
             pass
             print(e)
     elif connection is False:
+        pass
+
+
+def hotkeys():
+    if is_pressed("left shift + z") is True:
+        volume_slider.set(volume_slider.get() + 0.02)
+
+    elif is_pressed("left shift + x") is True:
+        volume_slider.set(volume_slider.get() - 0.02)
+    
+    else:
         pass
 
 
@@ -104,7 +115,7 @@ def play_time():
         slider_position = int(song_length)
         my_slider.config(to=slider_position, value=int(my_slider.get()))
         converted_current_time = time.strftime('%M:%S', time.gmtime(int(my_slider.get())))
-        status_bar.config(text=f'{song_box.size()} songs/ Time Elapsed: {converted_current_time}  of  {converted_song_length}  ')
+        status_bar.config(text=f'{song_box.size()} / {song_box.index(str(ACTIVE))} |Time Elapsed: {converted_current_time}  of  {converted_song_length}  ')
 
         global state, details
         state = f'{converted_current_time}  of  {converted_song_length}'
@@ -163,7 +174,6 @@ def play():
     play_time()
 
 
-global stopped
 stopped = False
 
 
@@ -240,7 +250,6 @@ def delete_all_songs():
     mixer.music.stop()
 
 
-global paused
 paused = False
 
 
@@ -314,19 +323,15 @@ play_button.grid(row=0, column=2, padx=10)
 pause_button.grid(row=0, column=3, padx=10)
 stop_button.grid(row=0, column=4, padx=10)
 
-
 my_menu = Menu(root)
 root.config(menu=my_menu)
 
-add_song_menu = Menu(my_menu)
-my_menu.add_cascade(label="Playlist settings", menu=add_song_menu)
-add_song_menu.add_command(label="Refresh the playlist", command=add_songs)
-add_song_menu.add_command(label="Mix the playlist", command=add_mixed_songs)
-
-remove_song_menu = Menu(my_menu)
-my_menu.add_cascade(label="Remove Songs", menu=remove_song_menu)
-remove_song_menu.add_command(label="Delete A Song From Playlist", command=delete_song)
-remove_song_menu.add_command(label="Delete All Songs From Playlist", command=delete_all_songs)
+playlist_settings_menu = Menu(my_menu)
+my_menu.add_cascade(label="Playlist settings", menu=playlist_settings_menu)
+playlist_settings_menu.add_command(label="Refresh the playlist", command=add_songs)
+playlist_settings_menu.add_command(label="Mix the playlist", command=add_mixed_songs)
+playlist_settings_menu.add_command(label="Delete A Song From Playlist", command=delete_song)
+playlist_settings_menu.add_command(label="Delete Playlist", command=delete_all_songs)
 
 
 status_bar = Label(root, text="", bd=1, relief=GROOVE, anchor=E)
@@ -337,7 +342,7 @@ my_slider = ttk.Scale(master_frame, from_=0, to=100, orient=HORIZONTAL, value=0,
 my_slider.grid(row=2, column=0, pady=10)
 
 
-volume_slider = ttk.Scale(volume_frame, from_=0, to=1, orient=VERTICAL, value=1, command=volume, length=125)
+volume_slider = ttk.Scale(volume_frame, from_=0, to=1, orient=VERTICAL, value=1, command=volume, length=101)
 volume_slider.pack(pady=7)
 
 vol = StringVar()
@@ -356,6 +361,7 @@ if __name__ == '__main__':
 
     while 1:
         discord_activity_loop()
+        hotkeys()
         try:
             root.update()
         except:
@@ -366,8 +372,3 @@ if __name__ == '__main__':
             except:
                 pass
             break
-
-
-
-
-
