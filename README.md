@@ -7,7 +7,11 @@ The main purpose is to listen to music without reducing the device performance w
 ## Install for Windows
 You can [Install](https://github.com/reisgoldmanX/ReisX-Mp3_player/raw/main/ReisX_Mp3-player%3D%3D0.0.2.zip) this zip package then extract it to a folder. <br />
 After that you just start `ReisX_Mp3-player.exe`.
+## Releases
 
+**The v0.0.2 update**
+* Moved `Remove Songs` section to `Playlist Settings`
+* Added Hotkeys Volume up (<kbd>Shift_l</kbd> + <kbd>z</kbd>) Volume down (<kbd>Shift_l</kbd> + <kbd>x</kbd>)
 ## Usage
 **This Music Player only works for Windows.**
 
