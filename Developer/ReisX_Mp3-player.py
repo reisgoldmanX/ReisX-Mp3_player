@@ -18,7 +18,7 @@ root.resizable(False, False)
 mixer.init()
 
 music_dir = os.getcwd() + "\Music\\"
-client_id = "CLİENT_İD"
+client_id = "Client_id"
 RPC = Presence(client_id)
 state = "Dev: reisgoldmanX"
 details = "Just started"
@@ -81,7 +81,7 @@ def hotkeys():
 
     elif is_pressed("left shift + x") is True:
         volume_slider.set(volume_slider.get() - 0.02)
-    
+
     else:
         pass
 
