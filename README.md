@@ -24,14 +24,6 @@ The black screen is the Playlist part you can choose the music you want to liste
 ![Playlist Settings](readme_images/Playlist_settings.png)
 
 These are the playlist settings you can refresh and mix the playlist by clicking on them.
-
-The `remove Songs` section next to the `Playlist settings` section :
-
-
-![Remove Songs](readme_images/Remove_songs.PNG)
-
-
-You can remove a song from the playlist or you can remove all the songs in the playlist by clicking them.
 This music player supports [discord](https://discord.com/) activites this works only with desktop discord app.
 
 ![discord realtime](readme_images/Discord-activity.png)
@@ -51,6 +43,7 @@ Any contributions you make are greatly appreciated.
 6. [os](https://docs.python.org/3.8/library/os.html)
 7. [requests===2.25.1](https://pypi.org/project/requests/)
 8. [pypresence==4.2.0](https://github.com/qwertyquerty/pypresence/)
+9. [keyboard==0.13.5](https://pypi.org/project/keyboard/)
 
 
 
