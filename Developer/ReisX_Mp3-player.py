@@ -4,10 +4,9 @@ from pygame import mixer
 from mutagen.mp3 import MP3
 from random import choice
 from keyboard import is_pressed
-from requests import get
 from pypresence import Presence
-import time
-import os
+from time import time, strftime, gmtime
+from os import getcwd, listdir
 
 
 root = Tk()
@@ -17,16 +16,19 @@ root.iconbitmap("images/Theicon.ico")
 root.resizable(False, False)
 mixer.init()
 
-music_dir = os.getcwd() + "\Music\\"
-client_id = "Client_id"
+music_dir = getcwd() + "\Music\\"
+client_id = "838036099221684234"
 RPC = Presence(client_id)
 state = "Dev: reisgoldmanX"
-details = "Just started"
-is_working = None
+details = "Listening..."
+current_song = ""
+
+connection = None
+running = True
+now_stamp = int(time())
 
 
 def updateDiscord(durum, detaylar):
-    global is_working
     big_image = f"m--zikbot"
     big_text = f"ReisX: Mp3 Player"
     small_image = f"info"
@@ -35,58 +37,36 @@ def updateDiscord(durum, detaylar):
     state_dc = f"{durum}"
     details_dc = f"{detaylar}"
     buttons = [{"label": "Github", "url": "https://github.com/reisgoldmanX/ReisX-Mp3_player"}]
+    start_time = now_stamp
 
     try:
-        RPC.update(large_image=big_image, large_text=big_text, small_image=small_image, small_text=small_text, state=state_dc, details=details_dc, buttons=buttons)
-        is_working = True
+        RPC.update(large_image=big_image, large_text=big_text, small_image=small_image, small_text=small_text, state=state_dc, details=details_dc, start=start_time, buttons=buttons)
     except:
-        is_working = False
-
-    if is_working is True:
-        dc_label.config(image=discord_green)
-
-    elif is_working is False:
-        dc_label.config(image=discord_red)
+        return
 
 
-def discord_activity_loop():
-    time.sleep(1 / 10)
+def connectDiscord():
+    global connection
     try:
-        updateDiscord(durum=state, detaylar=details)
-    except:
-        pass
-
-
-def connect():
-    try:
-        r = get("https://google.com")
-        r.raise_for_status()
+        RPC.connect()
         connection = True
     except:
         connection = False
-
-    if connection is True:
-        try:
-            RPC.connect()
-        except Exception as e:
-            pass
-            print(e)
-    elif connection is False:
         pass
 
 
 def hotkeys():
     if is_pressed("left shift + z") is True:
-        volume_slider.set(volume_slider.get() + 0.02)
+        volume_slider.set(volume_slider.get() + 0.0002)
 
     elif is_pressed("left shift + x") is True:
-        volume_slider.set(volume_slider.get() - 0.02)
-
+        volume_slider.set(volume_slider.get() - 0.0002)
     else:
         pass
 
 
 def play_time():
+    global song_length
     if stopped:
         return
 
@@ -96,9 +76,8 @@ def play_time():
     song = f'{music_dir + song}.mp3'
     song_mut = MP3(song)
 
-    global song_length
     song_length = song_mut.info.length
-    converted_song_length = time.strftime('%M:%S', time.gmtime(song_length))
+    converted_song_length = strftime('%M:%S', gmtime(song_length))
 
     current_time += 1
     if int(my_slider.get()) == int(song_length):
@@ -114,11 +93,8 @@ def play_time():
 
         slider_position = int(song_length)
         my_slider.config(to=slider_position, value=int(my_slider.get()))
-        converted_current_time = time.strftime('%M:%S', time.gmtime(int(my_slider.get())))
-        status_bar.config(text=f'{song_box.size()} / {song_box.index(str(ACTIVE))} |Time Elapsed: {converted_current_time}  of  {converted_song_length}  ')
-
-        global state, details
-        state = f'{converted_current_time}  of  {converted_song_length}'
+        converted_current_time = strftime('%M:%S', gmtime(int(my_slider.get())))
+        status_bar.config(text=f'{current_song} |  {song_box.size()} / {int(song_box.index(str(ACTIVE))) + 1}  | Time Elapsed: {converted_current_time}  of  {converted_song_length}  ')
 
         next_time = int(my_slider.get()) + 1
         my_slider.config(value=next_time)
@@ -128,46 +104,44 @@ def play_time():
 
 def add_songs():
     delete_all_songs()
-    songs = os.listdir(music_dir)
-
-    counter = 0
-    for song in songs:
+    for song in get_music():
         song = song.replace(f"{music_dir}", "")
         song = song.replace(".mp3", "")
-
-        if str(song_box.get(first=counter)) == song:
-            counter += 1
-            pass
-        else:
-            song_box.insert(END, song)
+        song_box.insert(END, song)
 
 
 def add_mixed_songs():
     delete_all_songs()
-    songs = os.listdir(music_dir)
+    for i in range(0, len(get_music())):
+        random = choice(get_music())
+        get_music().remove(random)
+        song_box.insert(END, random.replace(".mp3", ""))
 
-    song_list = []
+
+def get_music():
+    songs = listdir(music_dir)
     for song in songs:
-        song = song.replace(f"{music_dir}", "")
-        song = song.replace(".mp3", "")
-        song_list.append(song)
+        edited_song = song.replace(".mp3", "")
+        if edited_song in song_box.get(first=0, last=END):
+            songs.remove(song)
+    return songs
 
-    for i in range(0, len(song_list)):
-        random = choice(song_list)
-        song_list.remove(random)
-        song_box.insert(END, random)
 
-    
 def play():
-
-    global stopped
+    global stopped, paused, current_song
     stopped = False
+    if paused is True:
+        pause(paused)
+        mixer.music.unload()
+        status_bar.config(text='')
+        my_slider.config(value=0)
 
     song = song_box.get(ACTIVE)
+    current_song = song
+    updateDiscord(song, details)
 
-    global state, details
-    details = f"{song}"
     song = f'{music_dir + song}.mp3'
+
     mixer.music.load(song)
     mixer.music.play(loops=0)
 
@@ -178,8 +152,7 @@ stopped = False
 
 
 def stop():
-
-    status_bar.config(text='')
+    status_bar.config(text='Stopped')
     my_slider.config(value=0)
 
     mixer.music.stop()
@@ -191,6 +164,9 @@ def stop():
 
 
 def next_song():
+    global paused, current_song
+    paused = False
+
     status_bar.config(text='')
     my_slider.config(value=0)
 
@@ -198,8 +174,8 @@ def next_song():
     next_one = next_one[0] + 1
     song = song_box.get(next_one)
 
-    global state, details
-    details = f"{song}"
+    current_song = song
+    updateDiscord(song, details)
 
     song = f'{music_dir + song}.mp3'
 
@@ -214,6 +190,8 @@ def next_song():
 
 
 def previous_song():
+    global paused, current_song
+    paused = False
 
     status_bar.config(text='')
     my_slider.config(value=0)
@@ -223,9 +201,9 @@ def previous_song():
     next_one = next_one[0] - 1
 
     song = song_box.get(next_one)
+    current_song = song
+    updateDiscord(song, details)
 
-    global state, details
-    details = f"{song}"
     song = f'{music_dir + song}.mp3'
 
     mixer.music.load(song)
@@ -260,9 +238,11 @@ def pause(is_paused):
     if paused:
         mixer.music.unpause()
         paused = False
+        updateDiscord(current_song, details)
     else:
         mixer.music.pause()
         paused = True
+        updateDiscord(current_song, "Paused.")
 
 
 def slide(x):
@@ -295,12 +275,6 @@ forward_btn_img = PhotoImage(file='images/forward50.png')
 play_btn_img = PhotoImage(file='images/play50.png')
 pause_btn_img = PhotoImage(file='images/pause50.png')
 stop_btn_img = PhotoImage(file='images/stop50.png')
-
-discord_red = PhotoImage(file="images/discord_red_in.png")
-discord_green = PhotoImage(file="images/discord_green_in.png")
-
-dc_label = Label(image=discord_red)
-dc_label.pack(side=TOP, anchor=NW)
 
 
 controls_frame = Frame(master_frame)
@@ -350,25 +324,24 @@ vol.set("")
 vol_label = Label(volume_frame, textvariable=vol, bg="white", fg="black")
 
 
-root.bind("<Alt_R><slash>", lambda event: pause(paused))
-root.bind("<Alt_R><*>", lambda event: stop())
-root.bind("<Alt_R><minus>", lambda event: previous_song())
-root.bind("<Alt_R><+>", lambda event: next_song())
-
-if __name__ == '__main__':
-    connect()
+def on_start():
+    connectDiscord()
     add_songs()
 
-    while 1:
-        discord_activity_loop()
+
+def on_close():
+    global running
+    root.iconify()
+    root.destroy()
+    running = False
+
+
+if __name__ == '__main__':
+    on_start()
+    root.protocol("WM_DELETE_WINDOW", on_close)
+
+    while running:
         hotkeys()
-        try:
-            root.update()
-        except:
-            mixer.music.stop()
-            mixer.quit()
-            try:
-                RPC.close()
-            except:
-                pass
+        root.update()
+        if not running:
             break
